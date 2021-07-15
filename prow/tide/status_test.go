@@ -685,8 +685,9 @@ func TestExpectedStatus(t *testing.T) {
 				},
 			)
 			pr.Author = struct {
-				Login githubql.String
-			}{githubql.String(tc.author)}
+				Login   githubql.String
+				HTMLURL githubql.String
+			}{githubql.String(tc.author), githubql.String("html")}
 			if tc.milestone != "" {
 				pr.Milestone = &struct {
 					Title githubql.String
@@ -905,11 +906,13 @@ func TestTargetUrl(t *testing.T) {
 			name: "PR dashboard config",
 			pr: &PullRequest{
 				Author: struct {
-					Login githubql.String
+					Login   githubql.String
+					HTMLURL githubql.String
 				}{Login: githubql.String("author")},
 				Repository: struct {
 					Name          githubql.String
 					NameWithOwner githubql.String
+					HTMLURL       githubql.String
 					Owner         struct {
 						Login githubql.String
 					}
@@ -923,11 +926,13 @@ func TestTargetUrl(t *testing.T) {
 			name: "generate link by default config",
 			pr: &PullRequest{
 				Author: struct {
-					Login githubql.String
+					Login   githubql.String
+					HTMLURL githubql.String
 				}{Login: githubql.String("author")},
 				Repository: struct {
 					Name          githubql.String
 					NameWithOwner githubql.String
+					HTMLURL       githubql.String
 					Owner         struct {
 						Login githubql.String
 					}
@@ -945,11 +950,13 @@ func TestTargetUrl(t *testing.T) {
 			name: "generate link by org config",
 			pr: &PullRequest{
 				Author: struct {
-					Login githubql.String
+					Login   githubql.String
+					HTMLURL githubql.String
 				}{Login: githubql.String("author")},
 				Repository: struct {
 					Name          githubql.String
 					NameWithOwner githubql.String
+					HTMLURL       githubql.String
 					Owner         struct {
 						Login githubql.String
 					}
@@ -967,11 +974,13 @@ func TestTargetUrl(t *testing.T) {
 			name: "generate link by repo config",
 			pr: &PullRequest{
 				Author: struct {
-					Login githubql.String
+					Login   githubql.String
+					HTMLURL githubql.String
 				}{Login: githubql.String("author")},
 				Repository: struct {
 					Name          githubql.String
 					NameWithOwner githubql.String
+					HTMLURL       githubql.String
 					Owner         struct {
 						Login githubql.String
 					}
