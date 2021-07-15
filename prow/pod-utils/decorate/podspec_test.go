@@ -945,6 +945,48 @@ func TestProwJobToPod(t *testing.T) {
 				},
 			},
 		},
+		{
+			podName: "pod",
+			buildID: "blabla",
+			labels:  map[string]string{"needstobe": "inherited"},
+			pjSpec: prowapi.ProwJobSpec{
+				Type:    prowapi.BatchJob,
+				Job:     "job-name",
+				Context: "job-context",
+				Agent:   prowapi.KubernetesAgent,
+				Refs: &prowapi.Refs{
+					Org:     "org-name",
+					Repo:    "repo-name",
+					BaseRef: "base-ref",
+					BaseSHA: "base-sha",
+					Pulls: []prowapi.Pull{
+						{
+							Number: 1,
+							Author: "author-name",
+							SHA:    "pull-sha",
+						},
+						{
+							Number: 2,
+							Author: "author-name2",
+							SHA:    "pull-sha2",
+						},
+					},
+				},
+				PodSpec: &coreapi.PodSpec{
+					Containers: []coreapi.Container{
+						{
+							Image: "tester",
+							Env: []coreapi.EnvVar{
+								{Name: "MY_ENV", Value: "rocks"},
+							},
+						},
+					},
+				},
+			},
+			pjStatus: prowapi.ProwJobStatus{
+				BuildID: "blabla",
+			},
+		},
 	}
 
 	findContainer := func(name string, pod coreapi.Pod) *coreapi.Container {

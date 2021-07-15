@@ -796,6 +796,38 @@ func TestNewProwJob(t *testing.T) {
 				kube.ContextAnnotation: "job-context",
 			},
 		},
+		{
+			name: "batch job",
+			spec: prowapi.ProwJobSpec{
+				Job:     "job",
+				Context: "job-context",
+				Type:    prowapi.BatchJob,
+				Refs: &prowapi.Refs{
+					Org:     "org",
+					Repo:    "repo",
+					BaseRef: "main",
+					Pulls: []prowapi.Pull{
+						{Number: 1},
+						{Number: 2},
+					},
+				},
+			},
+			labels: map[string]string{},
+			expectedLabels: map[string]string{
+				kube.CreatedByProw:     "true",
+				kube.ProwJobAnnotation: "job",
+				kube.ContextAnnotation: "job-context",
+				kube.ProwJobTypeLabel:  "batch",
+				kube.OrgLabel:          "org",
+				kube.RepoLabel:         "repo",
+				kube.BaseRefLabel:      "main",
+				kube.PullLabel:         "1_2",
+			},
+			expectedAnnotations: map[string]string{
+				kube.ProwJobAnnotation: "job",
+				kube.ContextAnnotation: "job-context",
+			},
+		},
 	}
 	for _, testCase := range testCases {
 		pj := NewProwJob(testCase.spec, testCase.labels, testCase.annotations)

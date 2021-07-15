@@ -129,7 +129,11 @@ func LabelsAndAnnotationsForSpec(spec prowapi.ProwJobSpec, extraLabels, extraAnn
 		labels[kube.RepoLabel] = refs.Repo
 		labels[kube.BaseRefLabel] = refs.BaseRef
 		if len(refs.Pulls) > 0 {
-			labels[kube.PullLabel] = strconv.Itoa(refs.Pulls[0].Number)
+			prNumbers := make([]string, 0)
+			for _, pull := range refs.Pulls {
+				prNumbers = append(prNumbers, strconv.Itoa(pull.Number))
+			}
+			labels[kube.PullLabel] = strings.Join(prNumbers, "_")
 		}
 	}
 
